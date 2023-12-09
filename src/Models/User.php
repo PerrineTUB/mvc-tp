@@ -6,21 +6,18 @@ use PDO;
 use PDOException;
 
 
-class User
-{
-    public int $id; 
+class User {
+    public int $id;
     public ?string $email;
     public ?string $passwordHash;
     public ?string $nom;
     public ?string $prenom;
     public ?string $adresse;
 
-    public function __construct()
-    {
+    public function __construct() {
     }
 
-    public function save()
-    {
+    public function save() {
         try {
             $conn = Connexion::getInstance()->getConn();
             $stt = $conn->prepare('INSERT INTO `user` (email,password_hash,nom,prenom,adresse) VALUES (?,?,?,?,?);');
@@ -37,8 +34,8 @@ class User
         }
     }
 
-    public static function findAll(): array
-    {
+
+    public static function findAll(): array {
         $result = [];
         $conn = Connexion::getInstance()->getConn();
         $stt = $conn->query('SELECT * FROM `user`');
@@ -47,10 +44,9 @@ class User
         }
 
         return $result;
-    } 
+    }
 
-    public static function findById(int $id): ?User
-    {
+    public static function findById(int $id): ?User {
         $conn = Connexion::getInstance()->getConn();
         $stt = $conn->prepare('SELECT * FROM `user` WHERE id = ?');
         $stt->bindParam(1, $id, PDO::PARAM_INT);
@@ -65,8 +61,7 @@ class User
         return $user;
     }
 
-    public static function hydrate(array $properties): User
-    {
+    public static function hydrate(array $properties): User {
         $user = new User();
         $user->id = $properties['id'];
         $user->email = isset($properties['email']) ? $properties['email'] : null;
@@ -76,5 +71,17 @@ class User
         $user->adresse = isset($properties['adresse']) ? $properties['adresse'] : null;
 
         return $user;
-    } 
+    }
+
+    public static function deleteUser($id) {
+        try {
+            $conn = Connexion::getInstance()->getConn();
+            $stt = $conn->prepare('DELETE FROM `user` WHERE `id`=?;');
+            $stt->bindParam(1, $id, PDO::PARAM_INT);
+            $stt->execute();
+        } catch (PDOException $e) {
+            // Logguer l'erreur dans le but de pouvoir reproduire l'anomalie
+            echo $e->getMessage();
+        }
+    }
 }

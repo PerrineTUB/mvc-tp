@@ -9,7 +9,7 @@
 
 <body>
     <?php include 'menu.php' ?>
-    <form method="POST" action="/mvc-tp/user/add">
+    <form method="POST" action="/mvc-tp/user/change">
         <p>Prénom : <input type="text" name="prenom" /> -
             Nom : <input type="text" name="nom" /></p>
         <p>Email : <input type="email" name="email" /> Mot de passe : <input type="password" name="psd" /></p>
