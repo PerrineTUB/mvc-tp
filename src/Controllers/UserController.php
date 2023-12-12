@@ -44,11 +44,11 @@ class UserController extends Controller {
         }
     }
 
-    public function deleteUser($id) {
+    public function delete() {
         $isSubmit = isset($_POST['id']);
 
         if ($isSubmit) {
-            $user = User::findById((int)$id['id']);
+            $user = User::findById((int)$_POST['id']);
             $user->deleteUser($user->id);
             $this->index();
         }
